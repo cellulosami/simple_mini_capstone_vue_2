@@ -17,12 +17,14 @@
       <hr>
     </div>
     <div class="modal">
-      <dialog class="modal-content" open style="text-align:left;">
-        <span class="close">&times;</span>
-        <p><b>Name:</b> {{ currentRecipe.name }}</p>
-        <p><b>Description:</b> {{ currentRecipe.description }}</p>
-        <p><b>Price:</b> ${{ currentRecipe.price }}</p>
-        <p><b>ID:</b> {{ currentRecipe.id }}</p>
+      <dialog id="product-details" class="modal-content" style="text-align:left;">
+        <form method="dialog">
+          <span v-on:click="closeModal" class="close" style="width: 24px; height: 24px;">&times;</span>v-on:click="closeModal" 
+          <p><b>Name:</b> {{ currentProduct.name }}</p>
+          <p><b>Description:</b> {{ currentProduct.description }}</p>
+          <p><b>Price:</b> ${{ currentProduct.price }}</p>
+          <p><b>ID:</b> {{ currentProduct.id }}</p>
+        </form>
       </dialog>
     </div>
   </div>
@@ -38,8 +40,6 @@ img {
 }
 
 .modal {
-  /* display: none; Hidden by default */
-  position: fixed; /* Stay in place */
   z-index: 1; /* Sit on top */
   left: 0;
   top: 0;
@@ -63,6 +63,10 @@ img {
   color: #aaa;
   float: right;
   font-size: 28px;
+  padding-top: 0px;
+  padding-bottom: 0px;
+  padding-right: 0px;
+  padding-left: 0px;
 }
 
 .close:hover,
@@ -82,7 +86,8 @@ export default {
       message: "Woah nelly",
       products: [],
       params: { name: "", description: "", price: "", image_url: "" },
-      currentRecipe: {},
+      currentProduct: {},
+      showModal: false
     };
   },
   created: function () {
@@ -106,9 +111,12 @@ export default {
         });
     },
     showProducts: function (product) {
-      console.log(product);
-      this.currentRecipe = product;
+      this.currentProduct = product;
+      document.querySelector("#product-details").showModal();
     },
+    closeModal: function () {
+      document.querySelector("#product-details").close();
+    }
   },
 };
 </script>
