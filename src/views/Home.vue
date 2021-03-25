@@ -20,10 +20,11 @@
       <dialog id="product-details" class="modal-content" style="text-align:left;">
         <form method="dialog">
           <span v-on:click="closeModal" class="close" style="width: 24px; height: 24px;">&times;</span>v-on:click="closeModal" 
-          <p><b>Name:</b> {{ currentProduct.name }}</p>
-          <p><b>Description:</b> {{ currentProduct.description }}</p>
-          <p><b>Price:</b> ${{ currentProduct.price }}</p>
-          <p><b>ID:</b> {{ currentProduct.id }}</p>
+          <p><b>Name:</b> <input v-model="currentProduct.name"></p>
+          <p><b>Description:</b> <input v-model="currentProduct.description"></p>
+          <p><b>Price:</b> <input v-model="currentProduct.price"></p>
+          <p><b>Image URL:</b> <input v-model="currentProduct.image_url"></p>
+          <button v-on:click="productsUpdate">Update</button>
         </form>
       </dialog>
     </div>
@@ -116,6 +117,15 @@ export default {
     },
     closeModal: function () {
       document.querySelector("#product-details").close();
+    },
+    productsUpdate: function () {
+      console.log("updating...");
+      let parameters = this.currentProduct;
+      axios
+        .patch("http://localhost:3000/api/products/" + this.currentProduct.id, parameters)
+        .then(response => {
+          console.log(response.data);
+        })
     }
   },
 };
