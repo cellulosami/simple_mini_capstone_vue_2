@@ -3,10 +3,10 @@
 <template>
   <div class="home">
     <h1 >{{ message }}</h1>
-    <p><input v-model="params.name"> -- Name</p>
-    <p><input v-model="params.description"> -- Description</p>
-    <p><input v-model="params.price"> -- Price</p>
-    <p><input v-model="params.image_url"> -- Image URL</p>
+    <p>Name -- <input v-model="params.name"></p>
+    <p>Price -- <input v-model="params.price"></p>
+    <p>Description -- <input v-model="params.description"></p>
+    <p>Image URL -- <input v-model="params.image_url"></p>
     <div></div>
     <button v-on:click="createProducts">Create new product</button>
     <hr>
@@ -25,6 +25,7 @@
           <p><b>Price:</b> <input v-model="currentProduct.price"></p>
           <p><b>Image URL:</b> <input v-model="currentProduct.image_url"></p>
           <button v-on:click="productsUpdate">Update</button>
+          <button v-on:click="productsDestroy">Delete</button>
         </form>
       </dialog>
     </div>
@@ -119,12 +120,21 @@ export default {
       document.querySelector("#product-details").close();
     },
     productsUpdate: function () {
-      console.log("updating...");
       let parameters = this.currentProduct;
       axios
         .patch("http://localhost:3000/api/products/" + this.currentProduct.id, parameters)
         .then(response => {
           console.log(response.data);
+        })
+    },
+    productsDestroy: function() {
+      console.log(this.currentProduct);
+      axios
+        .delete("http://localhost:3000/api/products/" + this.currentProduct.id)
+        .then(response => {
+          console.log(response.data);
+          let index = this.products.indexOf(this.currentProduct);
+            this.products.splice(index, 1);
         })
     }
   },
